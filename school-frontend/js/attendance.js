@@ -201,6 +201,10 @@ clearFilterBtn.addEventListener("click", () => {
     loadHistory();
 });
 
+document.getElementById("export-att-btn").addEventListener("click", () => {
+    exportAttendance(filterClassSel.value, filterDateIn.value);
+});
+
 // ── view/edit modal ─────────────────────────────────────────────────────
 historyTbody.addEventListener("click", async (e) => {
     const id = e.target.dataset.id;

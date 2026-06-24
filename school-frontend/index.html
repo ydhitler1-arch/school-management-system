@@ -102,12 +102,26 @@
             <a href="/pages/fees.html" style="font-size:12px;margin-top:8px;display:inline-block">View all fees →</a>
         </div>
 
-        <!-- today's attendance + quick links -->
+        <!-- announcements + today's attendance + quick links -->
         <div class="two-col">
-            <div class="card">
-                <h2>Today's Attendance</h2>
-                <div id="att-summary-body">
-                    <p class="small" style="color:var(--gray-400)">Loading...</p>
+            <div>
+                <!-- announcements -->
+                <div class="card" style="margin-bottom:20px" id="announcements-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                        <h2 style="margin:0;border:none;padding:0">📢 Announcements</h2>
+                        <button id="new-announcement-btn" style="font-size:12px;padding:5px 12px;display:none">+ Post</button>
+                    </div>
+                    <div id="announcements-body">
+                        <p class="small" style="color:var(--gray-400)">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- today's attendance -->
+                <div class="card">
+                    <h2>Today's Attendance</h2>
+                    <div id="att-summary-body">
+                        <p class="small" style="color:var(--gray-400)">Loading...</p>
+                    </div>
                 </div>
             </div>
 
@@ -130,5 +144,23 @@
     <script>requireLogin();</script>
     <script src="/app.js"></script>
     <script src="/js/dashboard.js"></script>
+
+    <!-- post announcement modal -->
+    <div id="ann-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center">
+        <div style="background:#fff;border-radius:10px;padding:28px;width:90%;max-width:460px">
+            <h2 style="margin-bottom:16px">Post Announcement</h2>
+            <input class="input" type="text" id="ann-title" placeholder="Title" style="width:100%;margin-bottom:10px;box-sizing:border-box" />
+            <textarea id="ann-message" placeholder="Message..." style="width:100%;height:100px;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;resize:vertical;box-sizing:border-box;font-family:inherit"></textarea>
+            <div class="form-row" style="margin-top:10px">
+                <select class="input" id="ann-priority" style="flex:1">
+                    <option value="normal">Normal</option>
+                    <option value="important">Important</option>
+                    <option value="urgent">Urgent</option>
+                </select>
+                <button id="ann-submit-btn">Post</button>
+                <button id="ann-cancel-btn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
