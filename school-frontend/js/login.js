@@ -39,7 +39,8 @@ form.addEventListener("submit", async (e) => {
         // store the token and user info, then go to the dashboard
         localStorage.setItem("sms_token", data.token);
         localStorage.setItem("sms_user", JSON.stringify(data.user));
-        window.location.href = "/index.html";
+        // parents go to their own portal, everyone else goes to the dashboard
+        window.location.href = data.user.role === "parent" ? "/pages/parent.html" : "/index.html";
 
     } catch (err) {
         statusMsg.textContent = "Could not reach the server. Is the backend running?";

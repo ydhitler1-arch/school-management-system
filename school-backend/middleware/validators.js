@@ -42,11 +42,7 @@ exports.teacherValidationRules = [
     body('email')
         .optional({ checkFalsy: true })
         .trim()
-        .isEmail().withMessage('Must be a valid email address'),
-    // password is only sent on create (POST); skip validation when absent on updates
-    body('password')
-        .if(body('password').exists({ checkFalsy: true }))
-        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
+        .isEmail().withMessage('Must be a valid email address')
 ];
 
 exports.classValidationRules = [
@@ -85,5 +81,5 @@ exports.registerValidationRules = [
         .isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
     body('role')
         .optional()
-        .isIn(['admin', 'teacher']).withMessage('Role must be admin or teacher')
+        .isIn(['admin', 'teacher', 'parent']).withMessage('Role must be admin, teacher or parent')
 ];
