@@ -180,8 +180,7 @@ gradeForm.addEventListener("submit", async (e) => {
 
 cancelBtn.addEventListener("click", resetForm);
 
-// hide form for non-admins (teachers can still view but not add/edit/delete)
-if (!isAdmin) formCard.style.display = "none";
+// teachers can add grades but cannot edit or delete — handled in the table buttons below
 
 // ── table click handler (edit / delete / report card) ─────────────────
 gradesTbody.addEventListener("click", async (e) => {
