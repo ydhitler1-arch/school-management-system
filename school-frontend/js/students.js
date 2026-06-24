@@ -2,20 +2,29 @@ requireLogin();
 
 const API_BASE_STUDENTS = `${API_BASE}/students`;
 
-const tbody = document.getElementById("students-tbody");
-const form = document.getElementById("student-form");
-const idField = document.getElementById("student-id");
-const nameField = document.getElementById("name");
-const ageField = document.getElementById("age");
-const classField = document.getElementById("class");
-const rollNoField = document.getElementById("rollNo");
-const formTitle = document.getElementById("form-title");
-const submitBtn = document.getElementById("submit-btn");
-const cancelBtn = document.getElementById("cancel-btn");
-const statusMsg = document.getElementById("status-msg");
+const tbody         = document.getElementById("students-tbody");
+const form          = document.getElementById("student-form");
+const idField       = document.getElementById("student-id");
+const nameField     = document.getElementById("name");
+const ageField      = document.getElementById("age");
+const classField    = document.getElementById("class");
+const rollNoField   = document.getElementById("rollNo");
+const formTitle     = document.getElementById("form-title");
+const submitBtn     = document.getElementById("submit-btn");
+const cancelBtn     = document.getElementById("cancel-btn");
+const statusMsg     = document.getElementById("status-msg");
 
-const user = getUser();
+// search & filter elements
+const searchInput       = document.getElementById("search-input");
+const filterClassSearch = document.getElementById("filter-class-search");
+const clearSearchBtn    = document.getElementById("clear-search-btn");
+const resultsCount      = document.getElementById("results-count");
+
+const user    = getUser();
 const isAdmin = user && user.role === "admin";
+
+// all students loaded from the server — search filters this in-memory
+let allStudents = [];
 
 function showMessage(text, isError = false) {
     statusMsg.textContent = text;
@@ -30,18 +39,98 @@ function resetForm() {
     cancelBtn.style.display = "none";
 }
 
+function getClassName(s) {
+    return s.class
+        ? (s.class.section ? `${s.class.className} - ${s.class.section}` : s.class.className)
+        : "";
+}
+
+// ── render whatever subset of students matches current search/filter ──
+function renderStudents(students) {
+    tbody.innerHTML = "";
+
+    if (students.length === 0) {
+        const msg = allStudents.length === 0
+            ? `No students yet.${isAdmin ? " Add one using the form." : ""}`
+            : "No students match your search.";
+        tbody.innerHTML = `<tr><td colspan="5" class="small">${msg}</td></tr>`;
+        resultsCount.textContent = "";
+        return;
+    }
+
+    resultsCount.textContent =
+        students.length === allStudents.length
+            ? `${students.length} student${students.length !== 1 ? "s" : ""}`
+            : `${students.length} of ${allStudents.length} students`;
+
+    students.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${s.name || ""}</td>
+            <td>${s.age ?? ""}</td>
+            <td>${getClassName(s)}</td>
+            <td>${s.rollNo ?? ""}</td>
+            <td>
+                ${isAdmin ? `
+                <button type="button" class="edit-btn" data-id="${s._id}">Edit</button>
+                <button type="button" class="delete-btn" data-id="${s._id}">Delete</button>
+                ` : ""}
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ── apply search + class filter against the in-memory list ────────────
+function applyFilter() {
+    const query      = searchInput.value.trim().toLowerCase();
+    const classId    = filterClassSearch.value;
+
+    const filtered = allStudents.filter(s => {
+        const nameMatch  = !query || (s.name || "").toLowerCase().includes(query);
+        const classMatch = !classId || (s.class && s.class._id === classId);
+        return nameMatch && classMatch;
+    });
+
+    renderStudents(filtered);
+}
+
+// live search as user types
+searchInput.addEventListener("input", applyFilter);
+filterClassSearch.addEventListener("change", applyFilter);
+
+clearSearchBtn.addEventListener("click", () => {
+    searchInput.value        = "";
+    filterClassSearch.value  = "";
+    applyFilter();
+});
+
+// ── load class options into both dropdowns ─────────────────────────────
 async function loadClassOptions() {
     try {
         const res = await authFetch(`${API_BASE}/classes`);
         if (!res.ok) throw new Error();
         const classes = await res.json();
+
+        // form dropdown (for adding/editing students)
         classField.innerHTML = `<option value="">-- Select class --</option>`;
+        // search filter dropdown
+        filterClassSearch.innerHTML = `<option value="">All classes</option>`;
+
         classes.forEach(c => {
-            const opt = document.createElement("option");
-            opt.value = c._id;
-            opt.textContent = c.section ? `${c.className} - ${c.section}` : c.className;
-            classField.appendChild(opt);
+            const label = c.section ? `${c.className} - ${c.section}` : c.className;
+
+            const opt1 = document.createElement("option");
+            opt1.value = c._id;
+            opt1.textContent = label;
+            classField.appendChild(opt1);
+
+            const opt2 = document.createElement("option");
+            opt2.value = c._id;
+            opt2.textContent = label;
+            filterClassSearch.appendChild(opt2);
         });
+
         if (classes.length === 0) {
             const opt = document.createElement("option");
             opt.disabled = true;
@@ -51,52 +140,32 @@ async function loadClassOptions() {
     } catch (err) { /* not fatal */ }
 }
 
+// ── fetch all students from server ────────────────────────────────────
 async function loadStudents() {
     try {
         const res = await authFetch(API_BASE_STUDENTS);
         if (!res.ok) throw new Error();
-        const students = await res.json();
-
-        if (students.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="small">No students yet.${isAdmin ? " Add one using the form." : ""}</td></tr>`;
-            return;
-        }
-
-        tbody.innerHTML = "";
-        students.forEach(s => {
-            const tr = document.createElement("tr");
-            const className = s.class ? (s.class.section ? `${s.class.className} - ${s.class.section}` : s.class.className) : "";
-            tr.innerHTML = `
-                <td>${s.name || ""}</td>
-                <td>${s.age ?? ""}</td>
-                <td>${className}</td>
-                <td>${s.rollNo ?? ""}</td>
-                <td>
-                    ${isAdmin ? `
-                    <button type="button" class="edit-btn" data-id="${s._id}">Edit</button>
-                    <button type="button" class="delete-btn" data-id="${s._id}">Delete</button>
-                    ` : ""}
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+        allStudents = await res.json();
+        applyFilter(); // render with current search state
     } catch (err) {
         tbody.innerHTML = `<tr><td colspan="5" class="small">Could not load students.</td></tr>`;
-        showMessage("Could not load students. Is the backend running on port 5000?", true);
+        showMessage("Could not load students. Is the backend running?", true);
     }
 }
 
+// hide form for non-admins
 if (!isAdmin) {
     const formCard = form.closest(".card");
     if (formCard) formCard.style.display = "none";
 }
 
+// ── form submit ────────────────────────────────────────────────────────
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const payload = {
-        name: nameField.value.trim(),
-        age: Number(ageField.value),
-        class: classField.value || null,
+        name:   nameField.value.trim(),
+        age:    Number(ageField.value),
+        class:  classField.value || null,
         rollNo: rollNoField.value ? Number(rollNoField.value) : 0
     };
     const id = idField.value;
@@ -119,9 +188,10 @@ form.addEventListener("submit", async (e) => {
     }
 });
 
+// ── table click handler ────────────────────────────────────────────────
 tbody.addEventListener("click", async (e) => {
     const target = e.target;
-    const id = target.dataset.id;
+    const id     = target.dataset.id;
     if (!id) return;
 
     if (target.classList.contains("delete-btn")) {
@@ -141,13 +211,13 @@ tbody.addEventListener("click", async (e) => {
             const res = await authFetch(`${API_BASE_STUDENTS}/${id}`);
             if (!res.ok) throw new Error();
             const s = await res.json();
-            idField.value = s._id;
-            nameField.value = s.name || "";
-            ageField.value = s.age ?? "";
-            classField.value = s.class ? s.class._id : "";
-            rollNoField.value = s.rollNo ?? "";
-            formTitle.textContent = "Edit Student";
-            submitBtn.textContent = "Update Student";
+            idField.value           = s._id;
+            nameField.value         = s.name || "";
+            ageField.value          = s.age ?? "";
+            classField.value        = s.class ? s.class._id : "";
+            rollNoField.value       = s.rollNo ?? "";
+            formTitle.textContent   = "Edit Student";
+            submitBtn.textContent   = "Update Student";
             cancelBtn.style.display = "inline-block";
         } catch (err) {
             showMessage("Could not load student details.", true);
