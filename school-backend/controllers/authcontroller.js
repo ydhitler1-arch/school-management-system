@@ -72,6 +72,42 @@ exports.getUsers = async (req, res) => {
     }
 };
 
+// GET /api/auth/me — returns the logged-in user's profile
+exports.getMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) return res.status(404).json({ error: "User not found" });
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ error: "Could not fetch profile" });
+    }
+};
+
+// POST /api/auth/change-password
+exports.changePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ error: "Current and new password are required" });
+        }
+        if (newPassword.length < 6) {
+            return res.status(400).json({ error: "New password must be at least 6 characters" });
+        }
+
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ error: "User not found" });
+
+        const isMatch = await user.comparePassword(currentPassword);
+        if (!isMatch) return res.status(401).json({ error: "Current password is incorrect" });
+
+        user.password = newPassword; // pre-save hook will hash it
+        await user.save();
+        res.json({ message: "Password updated successfully" });
+    } catch (err) {
+        res.status(500).json({ error: "Could not update password" });
+    }
+};
+
 // DELETE /api/auth/users/:id
 exports.deleteUser = async (req, res) => {
     try {

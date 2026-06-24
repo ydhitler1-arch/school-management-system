@@ -6,6 +6,10 @@ const { loginValidationRules, registerValidationRules, handleValidation } = requ
 
 router.post('/login', loginValidationRules, handleValidation, authController.login);
 
+// profile routes — any logged-in user
+router.get('/me', authenticate, authController.getMe);
+router.post('/change-password', authenticate, authController.changePassword);
+
 // only an already-logged-in admin can create new logins
 router.post('/register', authenticate, authorize('admin'), registerValidationRules, handleValidation, authController.register);
 router.get('/users', authenticate, authorize('admin'), authController.getUsers);

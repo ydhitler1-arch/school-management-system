@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admin Tools - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="h1">Admin Tools</h1>
+        <p class="small">Year-end operations and system utilities.</p>
+
+        <div class="grid">
+            <!-- student promotion -->
+            <div class="card">
+                <h2>🎓 Student Promotion</h2>
+                <p class="small" style="margin-bottom:16px">
+                    Move all students from one class to the next at year end.
+                    This updates every student's class in one click.
+                </p>
+                <p class="msg" id="promote-msg"></p>
+
+                <div class="form-row">
+                    <select class="input" id="from-class" style="flex:1">
+                        <option value="">-- From class --</option>
+                    </select>
+                </div>
+                <div class="form-row" style="align-items:center;gap:8px">
+                    <span style="font-size:18px">→</span>
+                    <select class="input" id="to-class" style="flex:1">
+                        <option value="">-- To class (leave blank to graduate) --</option>
+                    </select>
+                </div>
+
+                <div id="promote-preview" style="display:none;margin:12px 0;padding:10px 14px;background:var(--gray-50);border-radius:8px;font-size:13px">
+                    <span id="preview-text"></span>
+                </div>
+
+                <div class="form-row">
+                    <button id="preview-btn" class="btn-secondary">Preview</button>
+                    <button id="promote-btn" style="display:none">Confirm Promotion</button>
+                </div>
+            </div>
+
+            <!-- email notifications -->
+            <div class="card">
+                <h2>📧 Email Notifications</h2>
+                <p class="small" style="margin-bottom:16px">
+                    Send overdue fee reminders to parents. Only parents with a linked
+                    account and email address will receive reminders.
+                </p>
+                <p class="msg" id="notify-msg"></p>
+
+                <div style="background:var(--gray-50);border-radius:8px;padding:14px;margin-bottom:16px;font-size:13px">
+                    <strong>Setup required:</strong> Add these to your Render environment variables:
+                    <ul style="margin:8px 0 0 16px;color:var(--gray-600)">
+                        <li><code>SMTP_USER</code> — your Gmail address</li>
+                        <li><code>SMTP_PASS</code> — your Gmail App Password</li>
+                        <li><code>SMTP_HOST</code> — smtp.gmail.com (default)</li>
+                        <li><code>SMTP_PORT</code> — 587 (default)</li>
+                    </ul>
+                </div>
+
+                <div class="form-row">
+                    <button id="test-email-btn" class="btn-secondary">Send Test Email</button>
+                </div>
+                <div class="form-row" style="margin-top:8px">
+                    <button id="send-reminders-btn">Send Overdue Fee Reminders</button>
+                </div>
+                <p class="small" style="margin-top:10px;color:var(--gray-400)">
+                    Test email will be sent to your own account to verify setup works.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/app.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
