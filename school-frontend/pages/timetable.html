@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Timetable - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .tt-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(6, 1fr);
+            gap: 1px;
+            background: var(--gray-200);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius);
+            overflow: hidden;
+            font-size: 12px;
+        }
+        .tt-cell {
+            background: var(--white);
+            padding: 8px 10px;
+            min-height: 60px;
+        }
+        .tt-header {
+            background: var(--gray-50);
+            font-weight: 700;
+            font-size: 11px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 6px;
+        }
+        .tt-period-label {
+            background: var(--gray-50);
+            font-weight: 600;
+            font-size: 11px;
+            color: var(--gray-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tt-subject { font-weight: 600; color: var(--gray-800); }
+        .tt-teacher { color: var(--gray-600); font-size: 11px; margin-top: 2px; }
+        .tt-time    { color: var(--gray-400); font-size: 10px; margin-top: 2px; }
+        .tt-empty   { color: var(--gray-400); font-size: 11px; font-style: italic; }
+
+        .day-editor { margin-top: 20px; }
+        .period-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr 90px 90px 36px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .period-row .period-num {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--gray-600);
+            text-align: center;
+        }
+        .remove-period-btn {
+            background: var(--danger);
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="h1">Timetable</h1>
+        <p class="small">View and manage the weekly class schedule.</p>
+        <p class="msg" id="status-msg"></p>
+
+        <!-- class selector -->
+        <div class="card" style="margin-bottom:20px">
+            <div class="form-row">
+                <select class="input" id="class-select" style="flex:1">
+                    <option value="">-- Select a class to view timetable --</option>
+                </select>
+                <button id="load-tt-btn">Load Timetable</button>
+            </div>
+        </div>
+
+        <!-- timetable view -->
+        <div id="tt-section" style="display:none">
+            <div class="card" style="margin-bottom:20px;overflow-x:auto">
+                <div id="tt-grid"></div>
+            </div>
+
+            <!-- day editor (admin only) -->
+            <div class="card day-editor" id="editor-card" style="display:none">
+                <h2>Edit Day Schedule</h2>
+                <div class="form-row">
+                    <select class="input" id="edit-day" style="flex:1">
+                        <option value="">-- Select day to edit --</option>
+                        <option>Monday</option>
+                        <option>Tuesday</option>
+                        <option>Wednesday</option>
+                        <option>Thursday</option>
+                        <option>Friday</option>
+                        <option>Saturday</option>
+                    </select>
+                    <button id="load-day-btn">Load Day</button>
+                </div>
+
+                <div id="periods-editor" style="margin-top:12px;display:none">
+                    <div class="period-row" style="font-weight:600;font-size:11px;color:var(--gray-600);text-transform:uppercase">
+                        <div style="text-align:center">Period</div>
+                        <div>Subject</div>
+                        <div>Teacher</div>
+                        <div>Start</div>
+                        <div>End</div>
+                        <div></div>
+                    </div>
+                    <div id="periods-list"></div>
+                    <div class="form-row" style="margin-top:12px">
+                        <button id="add-period-btn" class="btn-secondary">+ Add Period</button>
+                        <button id="save-day-btn" style="margin-left:auto">Save Schedule</button>
+                        <button id="clear-day-btn" class="delete-btn">Clear Day</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/app.js"></script>
+    <script src="/js/timetable.js"></script>
+</body>
+</html>

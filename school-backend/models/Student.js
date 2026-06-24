@@ -17,6 +17,10 @@ const studentSchema = new mongoose.Schema({
     rollNo: {
         type: Number,
         default: 0
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     }
 });
 

@@ -14,6 +14,7 @@ const classRoutes      = require('./routes/classroutes');
 const attendanceRoutes = require('./routes/attendanceroutes');
 const gradesRoutes     = require('./routes/gradesroutes');
 const feesRoutes       = require('./routes/feesroutes');
+const timetableRoutes  = require('./routes/timetableroutes');
 
 const app = express();
 
@@ -85,6 +86,7 @@ app.use('/api/classes',    classRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/grades',     gradesRoutes);
 app.use('/api/fees',       feesRoutes);
+app.use('/api/timetable',  timetableRoutes);
 
 // ── error handlers ─────────────────────────────────────────────────────
 app.use((req, res) => res.status(404).json({ error: "Route not found" }));

@@ -17,6 +17,12 @@
 
         <div class="grid">
             <div class="card">
+                <div class="form-row" style="margin-bottom:14px">
+                    <input class="input" type="text" id="search-name" placeholder="🔍  Search by name..." style="flex:2" />
+                    <input class="input" type="text" id="search-subject" placeholder="Filter by subject..." style="flex:1" />
+                    <button type="button" id="clear-search-btn" class="btn-secondary">Clear</button>
+                </div>
+                <p id="results-count" class="small" style="margin-bottom:8px"></p>
                 <table class="table">
                     <thead>
                         <tr>
@@ -42,10 +48,10 @@
                         <input class="input" type="text" id="name" placeholder="Full name" required style="flex:1" />
                     </div>
                     <div class="form-row">
-                        <input class="input" type="text" id="subject" placeholder="Subject" required style="flex:1" />
+                        <input class="input" type="text" id="subject" placeholder="Subject" style="flex:1" />
                     </div>
                     <div class="form-row">
-                        <input class="input" type="email" id="email" placeholder="Email" required style="flex:1" />
+                        <input class="input" type="email" id="email" placeholder="Email" style="flex:1" />
                     </div>
                     <div class="form-row">
                         <input class="input" type="password" id="password" placeholder="Login password (min 6 chars)" style="flex:1" />

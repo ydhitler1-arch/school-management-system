@@ -1,9 +1,10 @@
 const Student = require('../models/Student');
 
-// GET /api/students
+// GET /api/students — only active students by default
 exports.getStudents = async (req, res) => {
     try {
-        const students = await Student.find().populate('class', 'className section');
+        const students = await Student.find({ isActive: true })
+            .populate('class', 'className section');
         res.json(students);
     } catch (err) {
         res.status(500).json({ error: "Could not fetch students" });
@@ -13,7 +14,8 @@ exports.getStudents = async (req, res) => {
 // GET /api/students/:id
 exports.getStudentById = async (req, res) => {
     try {
-        const student = await Student.findById(req.params.id).populate('class', 'className section');
+        const student = await Student.findById(req.params.id)
+            .populate('class', 'className section');
         if (!student) return res.status(404).json({ error: "Student not found" });
         res.json(student);
     } catch (err) {
@@ -50,13 +52,17 @@ exports.updateStudent = async (req, res) => {
     }
 };
 
-// DELETE /api/students/:id
+// DELETE /api/students/:id — soft delete (sets isActive: false)
 exports.deleteStudent = async (req, res) => {
     try {
-        const student = await Student.findByIdAndDelete(req.params.id);
+        const student = await Student.findByIdAndUpdate(
+            req.params.id,
+            { isActive: false },
+            { new: true }
+        );
         if (!student) return res.status(404).json({ error: "Student not found" });
-        res.json({ message: "Student deleted" });
+        res.json({ message: "Student removed" });
     } catch (err) {
-        res.status(500).json({ error: "Could not delete student" });
+        res.status(500).json({ error: "Could not remove student" });
     }
 };

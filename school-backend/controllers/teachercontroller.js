@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 // GET /api/teachers
 exports.getTeachers = async (req, res) => {
     try {
-        const teachers = await Teacher.find().populate('userId', 'name email role');
+        const teachers = await Teacher.find({ isActive: true })
+            .populate('userId', 'name email role');
         res.json(teachers);
     } catch (err) {
         console.error('getTeachers error:', err);
@@ -68,9 +69,6 @@ exports.addTeacher = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
         console.error('addTeacher error:', err);
-        if (err.code === 11000) {
-            return res.status(409).json({ error: "A teacher with this email already exists" });
-        }
         res.status(400).json({ error: "Could not add teacher" });
     }
 };
@@ -126,15 +124,11 @@ exports.updateTeacher = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
         console.error('updateTeacher error:', err);
-        if (err.code === 11000) {
-            return res.status(409).json({ error: "A teacher with this email already exists" });
-        }
         res.status(400).json({ error: "Could not update teacher" });
     }
 };
 
-// DELETE /api/teachers/:id
-// Deletes both Teacher profile and linked User login atomically
+// DELETE /api/teachers/:id — soft delete (sets isActive: false on Teacher, disables User login)
 exports.deleteTeacher = async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -146,18 +140,26 @@ exports.deleteTeacher = async (req, res) => {
             return res.status(404).json({ error: "Teacher not found" });
         }
 
+        // soft delete the teacher profile
+        teacher.isActive = false;
+        await teacher.save({ session });
+
+        // also deactivate the linked User login so they can no longer sign in
         if (teacher.userId) {
-            await User.findByIdAndDelete(teacher.userId).session(session);
+            await User.findByIdAndUpdate(
+                teacher.userId,
+                { isActive: false },
+                { session }
+            );
         }
-        await Teacher.findByIdAndDelete(req.params.id).session(session);
 
         await session.commitTransaction();
         session.endSession();
-        res.json({ message: "Teacher and login account deleted" });
+        res.json({ message: "Teacher deactivated" });
     } catch (err) {
         await session.abortTransaction();
         session.endSession();
         console.error('deleteTeacher error:', err);
-        res.status(500).json({ error: "Could not delete teacher" });
+        res.status(500).json({ error: "Could not deactivate teacher" });
     }
 };
