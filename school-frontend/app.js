@@ -10,6 +10,8 @@ fetch("/components/navbar.html")
             const usersLink  = document.getElementById("nav-users");
             if (nameEl)    nameEl.textContent = `${user.name} (${user.role})`;
             if (usersLink && user.role === "admin") usersLink.style.display = "block";
+            const adminLink = document.getElementById("nav-admin");
+            if (adminLink && user.role === "admin") adminLink.style.display = "block";
         }
 
         // highlight the active nav link based on the current page path

@@ -17,6 +17,8 @@ const feesRoutes          = require('./routes/feesroutes');
 const timetableRoutes     = require('./routes/timetableroutes');
 const announcementRoutes  = require('./routes/announcementroutes');
 const parentRoutes        = require('./routes/parentroutes');
+const promoteRoutes       = require('./routes/promoteroutes');
+const notificationRoutes  = require('./routes/notificationroutes');
 
 const app = express();
 
@@ -70,7 +72,9 @@ app.use('/api/grades',        gradesRoutes);
 app.use('/api/fees',          feesRoutes);
 app.use('/api/timetable',     timetableRoutes);
 app.use('/api/announcements', announcementRoutes);
-app.use('/api/parent',       parentRoutes);
+app.use('/api/parent',        parentRoutes);
+app.use('/api/promote',       promoteRoutes);
+app.use('/api/notify',        notificationRoutes);
 
 app.use((req, res) => res.status(404).json({ error: "Route not found" }));
 app.use((err, req, res, next) => {
