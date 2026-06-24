@@ -5,6 +5,48 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Dashboard - School Management System</title>
     <link rel="stylesheet" href="/styles.css">
+    <style>
+        .alert-card {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            margin-bottom: 20px;
+        }
+        .alert-card h3 { font-size: 13px; font-weight: 700; color: #b7770d; margin-bottom: 10px; }
+        .alert-list { list-style: none; padding: 0; margin: 0; }
+        .alert-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid #ffe082;
+            font-size: 13px;
+        }
+        .alert-list li:last-child { border-bottom: none; }
+        .alert-list .student-name { font-weight: 600; color: var(--gray-800); }
+        .alert-list .fee-detail   { color: var(--gray-600); font-size: 12px; }
+        .alert-list .overdue-amt  { color: var(--danger); font-weight: 700; }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        @media(max-width:768px) { .two-col { grid-template-columns: 1fr; } }
+        .att-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 13px;
+        }
+        .att-summary-row:last-child { border-bottom: none; }
+        .att-bar {
+            height: 6px;
+            border-radius: 3px;
+            background: var(--gray-200);
+            margin-top: 4px;
+            overflow: hidden;
+        }
+        .att-bar-fill { height: 100%; background: var(--success); border-radius: 3px; transition: width 0.4s; }
+    </style>
 </head>
 <body>
     <div id="navbar-placeholder"></div>
@@ -53,28 +95,32 @@
             </div>
         </div>
 
-        <!-- quick links -->
-        <div class="card" style="margin-bottom:20px">
-            <h2>Quick Actions</h2>
-            <div class="quick-grid">
-                <a href="/pages/attendance.html" class="quick-link">
-                    <span class="ql-icon">📋</span> Mark Attendance
-                </a>
-                <a href="/pages/grades.html" class="quick-link">
-                    <span class="ql-icon">📝</span> Enter Grades
-                </a>
-                <a href="/pages/fees.html" class="quick-link">
-                    <span class="ql-icon">💳</span> Manage Fees
-                </a>
-                <a href="/pages/students.html" class="quick-link">
-                    <span class="ql-icon">🎓</span> Students
-                </a>
-                <a href="/pages/teachers.html" class="quick-link">
-                    <span class="ql-icon">👩‍🏫</span> Teachers
-                </a>
-                <a href="/pages/classes.html" class="quick-link">
-                    <span class="ql-icon">🏫</span> Classes
-                </a>
+        <!-- overdue fee alerts -->
+        <div id="overdue-alert" class="alert-card" style="display:none">
+            <h3>⚠️ Overdue Fee Alerts</h3>
+            <ul class="alert-list" id="overdue-list"></ul>
+            <a href="/pages/fees.html" style="font-size:12px;margin-top:8px;display:inline-block">View all fees →</a>
+        </div>
+
+        <!-- today's attendance + quick links -->
+        <div class="two-col">
+            <div class="card">
+                <h2>Today's Attendance</h2>
+                <div id="att-summary-body">
+                    <p class="small" style="color:var(--gray-400)">Loading...</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Quick Actions</h2>
+                <div class="quick-grid" style="grid-template-columns:1fr 1fr">
+                    <a href="/pages/attendance.html" class="quick-link"><span class="ql-icon">📋</span> Attendance</a>
+                    <a href="/pages/grades.html"     class="quick-link"><span class="ql-icon">📝</span> Grades</a>
+                    <a href="/pages/fees.html"       class="quick-link"><span class="ql-icon">💳</span> Fees</a>
+                    <a href="/pages/timetable.html"  class="quick-link"><span class="ql-icon">🗓️</span> Timetable</a>
+                    <a href="/pages/students.html"   class="quick-link"><span class="ql-icon">🎓</span> Students</a>
+                    <a href="/pages/teachers.html"   class="quick-link"><span class="ql-icon">👩‍🏫</span> Teachers</a>
+                </div>
             </div>
         </div>
     </div>
