@@ -1,4 +1,4 @@
-// ── theme system (runs immediately to avoid flash) ─────────────────────
+// ── theme (runs immediately to prevent flash) ──────────────────────────
 (function() {
     const saved = localStorage.getItem("sms_theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -8,54 +8,46 @@
 function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("sms_theme", theme);
-    const icons = document.querySelectorAll("#theme-toggle, #theme-toggle-desktop");
-    icons.forEach(btn => {
-        if (btn) {
-            const isMobile = btn.id === "theme-toggle";
-            btn.textContent = theme === "dark"
-                ? (isMobile ? "☀️" : "☀️ Light")
-                : (isMobile ? "🌙" : "🌙 Dark");
-        }
+    document.querySelectorAll("#theme-toggle, #theme-toggle-desktop").forEach(btn => {
+        if (!btn) return;
+        const isMobile = btn.id === "theme-toggle";
+        btn.textContent = theme === "dark" ? (isMobile ? "☀️" : "☀️ Light") : (isMobile ? "🌙" : "🌙 Dark");
     });
 }
 
-// ── navbar loader ──────────────────────────────────────────────────────
+// ── load navbar ────────────────────────────────────────────────────────
 fetch("/components/navbar.html")
     .then(res => res.text())
     .then(html => {
         document.getElementById("navbar-placeholder").innerHTML = html;
 
-        // apply theme
-        const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
-        applyTheme(currentTheme);
+        // apply saved theme
+        applyTheme(document.documentElement.getAttribute("data-theme") || "light");
 
-        // theme toggle buttons (mobile + desktop)
+        // theme toggle buttons
         ["theme-toggle", "theme-toggle-desktop"].forEach(id => {
             const btn = document.getElementById(id);
-            if (btn) {
-                btn.addEventListener("click", () => {
-                    const current = document.documentElement.getAttribute("data-theme");
-                    applyTheme(current === "dark" ? "light" : "dark");
-                });
-            }
+            if (btn) btn.addEventListener("click", () => {
+                applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+            });
         });
 
-        // ── hamburger menu ─────────────────────────────────────────────
+        // ── hamburger / drawer ─────────────────────────────────────────
         const hamburger = document.getElementById("hamburger");
         const drawer    = document.getElementById("nav-drawer");
         const overlay   = document.getElementById("nav-overlay");
         const closeBtn  = document.getElementById("drawer-close");
 
         function openDrawer() {
-            drawer.classList.add("open");
-            overlay.classList.add("open");
-            hamburger.classList.add("open");
+            drawer && drawer.classList.add("open");
+            overlay && overlay.classList.add("open");
+            hamburger && hamburger.classList.add("open");
             document.body.style.overflow = "hidden";
         }
 
         function closeDrawer() {
-            drawer.classList.remove("open");
-            overlay.classList.remove("open");
+            drawer && drawer.classList.remove("open");
+            overlay && overlay.classList.remove("open");
             hamburger && hamburger.classList.remove("open");
             document.body.style.overflow = "";
         }
@@ -64,39 +56,43 @@ fetch("/components/navbar.html")
         if (closeBtn)  closeBtn.addEventListener("click", closeDrawer);
         if (overlay)   overlay.addEventListener("click", closeDrawer);
 
-        // close drawer on nav link click
+        // close on link click inside drawer
         if (drawer) {
-            drawer.querySelectorAll("a").forEach(a => {
-                a.addEventListener("click", closeDrawer);
-            });
+            drawer.querySelectorAll("a").forEach(a => a.addEventListener("click", closeDrawer));
         }
 
         // ── user info ──────────────────────────────────────────────────
         const user = getUser();
         if (user) {
-            const nameEl         = document.getElementById("nav-user-name");
-            const drawerUserName = document.getElementById("drawer-user-name");
+            const nameEl      = document.getElementById("nav-user-name");
+            const drawerName  = document.getElementById("drawer-user-name");
+            const drawerRole  = document.getElementById("drawer-user-role");
 
-            if (nameEl)         nameEl.textContent = user.name;
-            if (drawerUserName) drawerUserName.textContent = `${user.name} (${user.role})`;
+            if (nameEl)     nameEl.textContent     = user.name;
+            if (drawerName) drawerName.textContent  = user.name;
+            if (drawerRole) drawerRole.textContent  = user.role.charAt(0).toUpperCase() + user.role.slice(1);
 
-            // show admin-only links in both drawer and desktop nav
-            ["nav-users", "nav-users-desktop"].forEach(id => {
-                const el = document.getElementById(id);
-                if (el && user.role === "admin") el.style.display = "block";
-            });
-            ["nav-admin", "nav-admin-desktop"].forEach(id => {
-                const el = document.getElementById(id);
-                if (el && user.role === "admin") el.style.display = "block";
-            });
+            // show admin links
+            if (user.role === "admin") {
+                ["nav-users", "nav-admin"].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = "flex";
+                });
+                ["nav-users-desktop", "nav-admin-desktop"].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.style.display = "block";
+                });
+            }
         }
 
-        // ── active nav link ────────────────────────────────────────────
+        // ── active link highlight ──────────────────────────────────────
         const currentPath = window.location.pathname;
         document.querySelectorAll(".nav-desktop-links a, .nav-links a").forEach(link => {
-            const linkPath = new URL(link.href, window.location.origin).pathname;
-            if (linkPath === currentPath || (currentPath === "/" && linkPath === "/index.html")) {
-                link.classList.add("active");
-            }
+            try {
+                const linkPath = new URL(link.href, window.location.origin).pathname;
+                if (linkPath === currentPath || (currentPath === "/" && linkPath === "/index.html")) {
+                    link.classList.add("active");
+                }
+            } catch(e) {}
         });
     });
