@@ -1,0 +1,13 @@
+{
+    "name": "school-frontend",
+    "version": "1.0.0",
+    "description": "Frontend for the school management system",
+    "scripts": {
+        "start": "npx serve ."
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "serve": "^14.2.5"
+    }
+}

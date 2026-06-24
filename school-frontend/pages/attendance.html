@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Attendance - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .attendance-list { list-style: none; padding: 0; margin: 0 0 16px; }
+        .attendance-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+        .attendance-list li:last-child { border-bottom: none; }
+        .attendance-list .roll { color: #888; font-size: 12px; margin-left: 6px; }
+        .toggle-btn {
+            padding: 5px 16px;
+            font-size: 12px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            min-width: 80px;
+        }
+        .toggle-btn.present { background: #e6f4ea; color: #1b7a3d; }
+        .toggle-btn.absent  { background: #fce8e6; color: #c0392b; }
+        .history-row td { font-size: 13px; }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .badge.present { background: #e6f4ea; color: #1b7a3d; }
+        .badge.absent  { background: #fce8e6; color: #c0392b; }
+    </style>
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="h1">Attendance</h1>
+        <p class="small">Mark daily attendance for a class, or view past records.</p>
+        <p class="msg" id="status-msg"></p>
+
+        <div class="grid">
+            <!-- Mark attendance panel -->
+            <div class="card">
+                <h2>Mark Attendance</h2>
+                <div class="form-row">
+                    <select class="input" id="mark-class" style="flex:1">
+                        <option value="">-- Select class --</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input class="input" type="date" id="mark-date" style="flex:1" />
+                </div>
+                <div class="form-row">
+                    <button id="load-students-btn">Load Students</button>
+                </div>
+
+                <div id="checklist-section" style="display:none">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+                        <strong id="checklist-title"></strong>
+                        <span style="font-size:12px;color:#888">Tap a button to toggle</span>
+                    </div>
+                    <ul class="attendance-list" id="student-checklist"></ul>
+                    <div class="form-row" style="margin-top:8px">
+                        <button id="mark-all-present-btn" class="btn-secondary" style="font-size:12px;padding:6px 12px">All Present</button>
+                        <button id="mark-all-absent-btn" class="btn-secondary" style="font-size:12px;padding:6px 12px">All Absent</button>
+                        <button id="submit-attendance-btn" style="margin-left:auto">Save Attendance</button>
+                    </div>
+                </div>
+
+                <div id="no-students-msg" style="display:none" class="small">
+                    No students are assigned to this class yet.
+                </div>
+            </div>
+
+            <!-- Filter / history panel -->
+            <div class="card">
+                <h2>Past Records</h2>
+                <div class="form-row">
+                    <select class="input" id="filter-class" style="flex:1">
+                        <option value="">All classes</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input class="input" type="date" id="filter-date" style="flex:1" placeholder="Filter by date" />
+                </div>
+                <div class="form-row">
+                    <button id="filter-btn">Filter</button>
+                    <button id="clear-filter-btn" class="btn-secondary">Clear</button>
+                </div>
+
+                <table class="table" style="margin-top:12px">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Class</th>
+                            <th>Present</th>
+                            <th>Absent</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-tbody">
+                        <tr><td colspan="5" class="small">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit modal -->
+    <div id="edit-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center">
+        <div style="background:#fff;border-radius:10px;padding:28px;width:90%;max-width:480px;max-height:80vh;overflow-y:auto">
+            <h2 id="edit-modal-title" style="margin-bottom:16px"></h2>
+            <ul class="attendance-list" id="edit-checklist"></ul>
+            <div style="display:flex;gap:10px;margin-top:16px">
+                <button id="edit-save-btn">Save Changes</button>
+                <button id="edit-cancel-btn" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/app.js"></script>
+    <script src="/js/attendance.js"></script>
+</body>
+
+</html>

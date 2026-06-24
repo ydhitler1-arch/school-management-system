@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Classes - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="h1">Manage Classes</h1>
+        <p class="small">Add, edit, or remove classes and assign a class teacher.</p>
+        <p class="msg" id="status-msg"></p>
+
+        <div class="grid">
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Section</th>
+                            <th>Class Teacher</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="classes-tbody">
+                        <tr>
+                            <td colspan="4" class="small">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2 id="form-title">Add Class</h2>
+                <form id="class-form">
+                    <input type="hidden" id="class-id" />
+                    <div class="form-row">
+                        <input class="input" type="text" id="className" placeholder="Class name (e.g. Grade 8)" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="text" id="section" placeholder="Section (e.g. A)" style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <select class="input" id="classTeacher" style="flex:1">
+                            <option value="">-- Select class teacher --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" id="submit-btn">Add Class</button>
+                        <button type="button" id="cancel-btn" class="btn-secondary" style="display:none">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/classes.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Users - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="h1">Manage Users</h1>
+        <p class="small">Create login accounts for admins and teachers. Passwords are stored securely and cannot be recovered — set a strong one and share it directly with the user.</p>
+        <p class="msg" id="status-msg"></p>
+
+        <div class="grid">
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-tbody">
+                        <tr><td colspan="4" class="small">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Create Account</h2>
+                <form id="user-form">
+                    <div class="form-row">
+                        <input class="input" type="text" id="name" placeholder="Full name" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="email" id="email" placeholder="Email address" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="password" id="password" placeholder="Password (min 6 characters)" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <select class="input" id="role" style="flex:1">
+                            <option value="teacher">Teacher</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit">Create Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/app.js"></script>
+    <script src="/js/users.js"></script>
+</body>
+
+</html>

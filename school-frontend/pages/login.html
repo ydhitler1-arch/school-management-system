@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sign In - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body { background: linear-gradient(135deg, #1241a8 0%, #1a56db 60%, #2563eb 100%); min-height: 100vh; }
+        .login-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .login-card {
+            background: #fff; border-radius: 12px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+            padding: 40px 36px 32px; width: 100%; max-width: 380px;
+        }
+        .login-logo { font-size: 36px; margin-bottom: 8px; }
+        .login-card h1 { font-size: 20px; font-weight: 700; color: var(--gray-800); margin-bottom: 2px; }
+        .login-card .subtitle { color: var(--gray-600); margin-bottom: 24px; font-size: 13px; }
+        .login-card .input { width: 100%; margin-bottom: 12px; padding: 10px 12px; font-size: 14px; }
+        .login-card button { width: 100%; padding: 10px; font-size: 14px; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <div class="login-wrap">
+        <div class="login-card">
+            <div class="login-logo">🏫</div>
+            <h1>School Management System</h1>
+            <p class="subtitle">Sign in to your account</p>
+            <p class="msg" id="status-msg"></p>
+            <form id="login-form">
+                <input class="input" type="email" id="email" placeholder="Email address" required autocomplete="email" />
+                <input class="input" type="password" id="password" placeholder="Password" required autocomplete="current-password" />
+                <button type="submit" id="submit-btn">Sign In</button>
+            </form>
+        </div>
+    </div>
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/login.js"></script>
+</body>
+</html>

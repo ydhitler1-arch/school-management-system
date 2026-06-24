@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="h1" id="welcome-msg">Welcome back</h1>
+            <p class="small" id="welcome-date"></p>
+        </div>
+
+        <!-- live stat cards -->
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#e8f0fe">🎓</div>
+                <div class="stat-info">
+                    <div class="value" id="stat-students">—</div>
+                    <div class="label">Students</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#e6f4ea">👩‍🏫</div>
+                <div class="stat-info">
+                    <div class="value" id="stat-teachers">—</div>
+                    <div class="label">Teachers</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fef9e7">🏫</div>
+                <div class="stat-info">
+                    <div class="value" id="stat-classes">—</div>
+                    <div class="label">Classes</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fce8e6">💰</div>
+                <div class="stat-info">
+                    <div class="value" id="stat-fees-pending">—</div>
+                    <div class="label">Fees Pending</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background:#fef3c7">⚠️</div>
+                <div class="stat-info">
+                    <div class="value" id="stat-fees-overdue">—</div>
+                    <div class="label">Fees Overdue</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- quick links -->
+        <div class="card" style="margin-bottom:20px">
+            <h2>Quick Actions</h2>
+            <div class="quick-grid">
+                <a href="/pages/attendance.html" class="quick-link">
+                    <span class="ql-icon">📋</span> Mark Attendance
+                </a>
+                <a href="/pages/grades.html" class="quick-link">
+                    <span class="ql-icon">📝</span> Enter Grades
+                </a>
+                <a href="/pages/fees.html" class="quick-link">
+                    <span class="ql-icon">💳</span> Manage Fees
+                </a>
+                <a href="/pages/students.html" class="quick-link">
+                    <span class="ql-icon">🎓</span> Students
+                </a>
+                <a href="/pages/teachers.html" class="quick-link">
+                    <span class="ql-icon">👩‍🏫</span> Teachers
+                </a>
+                <a href="/pages/classes.html" class="quick-link">
+                    <span class="ql-icon">🏫</span> Classes
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script>requireLogin();</script>
+    <script src="/app.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
