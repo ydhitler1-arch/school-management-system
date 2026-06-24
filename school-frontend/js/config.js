@@ -4,5 +4,5 @@
 // Example: "https://school-management-backend.onrender.com"
 // ─────────────────────────────────────────────────────────────────────
 const CONFIG = {
-    API_URL: "https://your-render-app.onrender.com"
+    API_URL: "https://school-backend-jo2c.onrender.com"
 };
