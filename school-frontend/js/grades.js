@@ -283,6 +283,10 @@ async function showReportCard(studentId) {
 reportCloseBtn.addEventListener("click", () => { reportModal.style.display = "none"; });
 reportModal.addEventListener("click", (e) => { if (e.target === reportModal) reportModal.style.display = "none"; });
 
+document.getElementById("report-print-btn").addEventListener("click", () => {
+    window.print();
+});
+
 // ── init ───────────────────────────────────────────────────────────────
 loadClassOptions();
 loadGrades();
