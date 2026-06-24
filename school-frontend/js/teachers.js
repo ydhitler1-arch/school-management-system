@@ -8,6 +8,7 @@ const idField = document.getElementById("teacher-id");
 const nameField = document.getElementById("name");
 const subjectField = document.getElementById("subject");
 const emailField = document.getElementById("email");
+const passwordField = document.getElementById("password");
 const formTitle = document.getElementById("form-title");
 const submitBtn = document.getElementById("submit-btn");
 const cancelBtn = document.getElementById("cancel-btn");
@@ -43,22 +44,42 @@ async function loadTeachers() {
         tbody.innerHTML = "";
         teachers.forEach(t => {
             const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${t.name || ""}</td>
-                <td>${t.subject || ""}</td>
-                <td>${t.email || ""}</td>
-                <td>
-                    ${isAdmin ? `
-                    <button type="button" class="edit-btn" data-id="${t._id}">Edit</button>
-                    <button type="button" class="delete-btn" data-id="${t._id}">Delete</button>
-                    ` : ""}
-                </td>
-            `;
+
+            const tdName    = document.createElement("td");
+            const tdSubject = document.createElement("td");
+            const tdEmail   = document.createElement("td");
+            const tdActions = document.createElement("td");
+
+            tdName.textContent    = t.name    || "";
+            tdSubject.textContent = t.subject || "";
+            tdEmail.textContent   = t.email   || "";
+
+            if (isAdmin) {
+                const editBtn = document.createElement("button");
+                editBtn.type = "button";
+                editBtn.className = "edit-btn";
+                editBtn.dataset.id = t._id;
+                editBtn.textContent = "Edit";
+
+                const delBtn = document.createElement("button");
+                delBtn.type = "button";
+                delBtn.className = "delete-btn";
+                delBtn.dataset.id = t._id;
+                delBtn.textContent = "Delete";
+
+                tdActions.appendChild(editBtn);
+                tdActions.appendChild(delBtn);
+            }
+
+            tr.appendChild(tdName);
+            tr.appendChild(tdSubject);
+            tr.appendChild(tdEmail);
+            tr.appendChild(tdActions);
             tbody.appendChild(tr);
         });
     } catch (err) {
         tbody.innerHTML = `<tr><td colspan="4" class="small">Could not load teachers.</td></tr>`;
-        showMessage("Could not load teachers. Is the backend running on port 5000?", true);
+        showMessage("Could not load teachers. Check your connection or try refreshing.", true);
     }
 }
 
@@ -70,12 +91,14 @@ if (!isAdmin) {
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const id = idField.value;
     const payload = {
         name: nameField.value.trim(),
         subject: subjectField.value.trim(),
         email: emailField.value.trim()
     };
-    const id = idField.value;
+    // password only required when creating a new teacher, not on edit
+    if (!id && passwordField) payload.password = passwordField.value;
 
     try {
         const res = await authFetch(`${API_BASE_TEACHERS}${id ? "/" + id : ""}`, {
