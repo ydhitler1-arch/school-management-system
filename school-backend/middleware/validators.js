@@ -42,7 +42,11 @@ exports.teacherValidationRules = [
     body('email')
         .optional({ checkFalsy: true })
         .trim()
-        .isEmail().withMessage('Must be a valid email address')
+        .isEmail().withMessage('Must be a valid email address'),
+    // password is only sent on create (POST); skip validation when absent on updates
+    body('password')
+        .if(body('password').exists({ checkFalsy: true }))
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters')
 ];
 
 exports.classValidationRules = [
