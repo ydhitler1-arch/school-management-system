@@ -226,5 +226,8 @@ tbody.addEventListener("click", async (e) => {
 });
 
 cancelBtn.addEventListener("click", resetForm);
+
+document.getElementById("export-students-btn").addEventListener("click", () => exportStudents());
+
 loadClassOptions();
 loadStudents();

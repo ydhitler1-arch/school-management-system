@@ -170,6 +170,10 @@ clearBtn.addEventListener("click",  () => {
     loadFees();
 });
 
+document.getElementById("export-fees-btn").addEventListener("click", () => {
+    exportFees(filterStatus.value || null);
+});
+
 // ── form submit ────────────────────────────────────────────────────────
 feeForm.addEventListener("submit", async (e) => {
     e.preventDefault();
