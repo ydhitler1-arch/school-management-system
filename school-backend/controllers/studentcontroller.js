@@ -3,7 +3,7 @@ const Student = require('../models/Student');
 // GET /api/students — only active students by default
 exports.getStudents = async (req, res) => {
     try {
-        const students = await Student.find({ isActive: true })
+        const students = await Student.find({ isActive: { $ne: false } })
             .populate('class', 'className section');
         res.json(students);
     } catch (err) {
