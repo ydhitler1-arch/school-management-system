@@ -17,6 +17,14 @@
 
         <div class="grid">
             <div class="card">
+                <div class="form-row" style="margin-bottom:14px">
+                    <input class="input" type="text" id="search-input" placeholder="🔍  Search by name..." style="flex:2" />
+                    <select class="input" id="filter-class-search" style="flex:1">
+                        <option value="">All classes</option>
+                    </select>
+                    <button type="button" id="clear-search-btn" class="btn-secondary">Clear</button>
+                </div>
+                <p id="results-count" class="small" style="margin-bottom:8px"></p>
                 <table class="table">
                     <thead>
                         <tr>
