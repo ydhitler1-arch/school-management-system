@@ -4,8 +4,8 @@ const teacherSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
-        unique: true   // one profile per user account
+        unique: true,
+        sparse: true   // allows existing records without userId to coexist until migrated
     },
     name: {
         type: String,
