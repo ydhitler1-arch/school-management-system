@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Grades - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .grade-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            min-width: 32px;
+            text-align: center;
+        }
+        .grade-A\+ { background:#e6f4ea; color:#1b7a3d; }
+        .grade-A  { background:#e6f4ea; color:#1b7a3d; }
+        .grade-B  { background:#e8f0fe; color:#1a56db; }
+        .grade-C  { background:#fef9e7; color:#b7770d; }
+        .grade-D  { background:#fff3e0; color:#e65100; }
+        .grade-F  { background:#fce8e6; color:#c0392b; }
+
+        .report-table { width:100%; border-collapse:collapse; font-size:13px; }
+        .report-table th { background:#f5f7fa; padding:8px 12px; text-align:left; font-weight:600; }
+        .report-table td { padding:8px 12px; border-bottom:1px solid #f0f0f0; }
+        .report-table tr:last-child td { border-bottom:none; }
+        .subject-heading { background:#f0f4ff; font-weight:700; padding:8px 12px; font-size:13px; }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="h1">Grades</h1>
+        <p class="small">Record exam results and view report cards.</p>
+        <p class="msg" id="status-msg"></p>
+
+        <div class="grid">
+            <!-- grades table + filters -->
+            <div class="card">
+                <div class="form-row">
+                    <select class="input" id="filter-class" style="flex:1">
+                        <option value="">All classes</option>
+                    </select>
+                    <select class="input" id="filter-exam" style="flex:1">
+                        <option value="">All exam types</option>
+                        <option>Unit Test</option>
+                        <option>Mid Term</option>
+                        <option>Final Exam</option>
+                        <option>Assignment</option>
+                        <option>Project</option>
+                    </select>
+                    <button id="filter-btn">Filter</button>
+                    <button id="clear-btn" class="btn-secondary">Clear</button>
+                </div>
+
+                <table class="table" style="margin-top:8px">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Subject</th>
+                            <th>Exam</th>
+                            <th>Marks</th>
+                            <th>Grade</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="grades-tbody">
+                        <tr><td colspan="6" class="small">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- entry form -->
+            <div class="card" id="form-card">
+                <h2 id="form-title">Add Grade</h2>
+                <form id="grade-form">
+                    <input type="hidden" id="grade-id" />
+                    <div class="form-row">
+                        <select class="input" id="form-class" required style="flex:1">
+                            <option value="">-- Select class --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <select class="input" id="form-student" required style="flex:1">
+                            <option value="">-- Select student --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="text" id="form-subject" placeholder="Subject" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <select class="input" id="form-exam" required style="flex:1">
+                            <option value="">-- Exam type --</option>
+                            <option>Unit Test</option>
+                            <option>Mid Term</option>
+                            <option>Final Exam</option>
+                            <option>Assignment</option>
+                            <option>Project</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="number" id="form-obtained" placeholder="Marks obtained" min="0" required style="flex:1" />
+                        <input class="input" type="number" id="form-total" placeholder="Total marks" min="1" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="text" id="form-remarks" placeholder="Remarks (optional)" style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" id="submit-btn">Add Grade</button>
+                        <button type="button" id="cancel-btn" class="btn-secondary" style="display:none">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report card modal -->
+    <div id="report-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:100;align-items:center;justify-content:center">
+        <div style="background:#fff;border-radius:10px;padding:28px;width:94%;max-width:560px;max-height:85vh;overflow-y:auto">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px">
+                <div>
+                    <h2 id="report-name" style="margin:0"></h2>
+                    <p id="report-meta" class="small" style="margin:4px 0 0"></p>
+                </div>
+                <button id="report-close-btn" class="btn-secondary" style="padding:5px 12px">Close</button>
+            </div>
+            <div id="report-body"></div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/app.js"></script>
+    <script src="/js/grades.js"></script>
+</body>
+</html>

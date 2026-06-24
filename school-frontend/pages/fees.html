@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fees - School Management System</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .status-badge {
+            display:inline-block; padding:2px 10px; border-radius:12px;
+            font-size:11px; font-weight:700; text-transform:uppercase;
+        }
+        .status-paid    { background:#e6f4ea; color:#1b7a3d; }
+        .status-pending { background:#fef9e7; color:#b7770d; }
+        .status-overdue { background:#fce8e6; color:#c0392b; }
+        .summary-grid {
+            display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px;
+        }
+        .summary-card {
+            background:#fff; border-radius:8px; padding:16px 18px;
+            box-shadow:0 1px 6px rgba(0,0,0,0.07); text-align:center;
+        }
+        .summary-card .amount { font-size:22px; font-weight:700; margin:4px 0; }
+        .summary-card .label  { font-size:12px; color:#888; }
+        .paid-color    { color:#1b7a3d; }
+        .pending-color { color:#b7770d; }
+        .overdue-color { color:#c0392b; }
+        .pay-btn { background:#1b7a3d; padding:4px 12px; font-size:12px; }
+    </style>
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="h1">Fee Records</h1>
+        <p class="small">Track student fee payments, pending dues, and overdue amounts.</p>
+        <p class="msg" id="status-msg"></p>
+
+        <!-- summary cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="label">Total Collected</div>
+                <div class="amount paid-color" id="sum-paid">—</div>
+                <div class="label" id="sum-paid-count"></div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Pending</div>
+                <div class="amount pending-color" id="sum-pending">—</div>
+                <div class="label" id="sum-pending-count"></div>
+            </div>
+            <div class="summary-card">
+                <div class="label">Overdue</div>
+                <div class="amount overdue-color" id="sum-overdue">—</div>
+                <div class="label" id="sum-overdue-count"></div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- fees table + filters -->
+            <div class="card">
+                <div class="form-row">
+                    <select class="input" id="filter-status" style="flex:1">
+                        <option value="">All statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="overdue">Overdue</option>
+                    </select>
+                    <select class="input" id="filter-type" style="flex:1">
+                        <option value="">All fee types</option>
+                        <option>Tuition</option>
+                        <option>Transport</option>
+                        <option>Library</option>
+                        <option>Sports</option>
+                        <option>Exam</option>
+                        <option>Other</option>
+                    </select>
+                    <button id="filter-btn">Filter</button>
+                    <button id="clear-btn" class="btn-secondary">Clear</button>
+                </div>
+
+                <table class="table" style="margin-top:8px">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Fee Type</th>
+                            <th>Amount</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="fees-tbody">
+                        <tr><td colspan="6" class="small">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- add fee form -->
+            <div class="card" id="form-card">
+                <h2 id="form-title">Add Fee Record</h2>
+                <form id="fee-form">
+                    <input type="hidden" id="fee-id" />
+                    <div class="form-row">
+                        <select class="input" id="form-class" style="flex:1">
+                            <option value="">-- Filter by class --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <select class="input" id="form-student" required style="flex:1">
+                            <option value="">-- Select student --</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <select class="input" id="form-type" required style="flex:1">
+                            <option value="">-- Fee type --</option>
+                            <option>Tuition</option>
+                            <option>Transport</option>
+                            <option>Library</option>
+                            <option>Sports</option>
+                            <option>Exam</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="number" id="form-amount" placeholder="Amount (₹)" min="0" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="date" id="form-due" required style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <input class="input" type="text" id="form-remarks" placeholder="Remarks (optional)" style="flex:1" />
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" id="submit-btn">Add Fee Record</button>
+                        <button type="button" id="cancel-btn" class="btn-secondary" style="display:none">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/app.js"></script>
+    <script src="/js/fees.js"></script>
+</body>
+</html>
