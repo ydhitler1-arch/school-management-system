@@ -3,13 +3,13 @@ const User = require('../models/User');
 
 const signToken = (user) => {
     return jwt.sign(
-        { id: user._id, name: user.name, role: user.role },
+        { id: user._id, name: user.name, role: user.role, studentId: user.studentId },
         process.env.JWT_SECRET,
         { expiresIn: '8h' }
     );
 };
 
-// POST /api/auth/login (public)
+// POST /api/auth/login
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -22,55 +22,61 @@ exports.login = async (req, res) => {
         const token = signToken(user);
         res.json({
             token,
-            user: { id: user._id, name: user.name, email: user.email, role: user.role }
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                studentId: user.studentId || null
+            }
         });
     } catch (err) {
         res.status(500).json({ error: "Login failed" });
     }
 };
 
-// POST /api/auth/register (admin only - creates a teacher or admin login)
+// POST /api/auth/register — admin only
 exports.register = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password, role, studentId } = req.body;
 
         const existing = await User.findOne({ email: email.toLowerCase().trim() });
         if (existing) return res.status(400).json({ error: "A user with this email already exists" });
 
         const user = new User({
-            name,
-            email,
-            password,
-            role: role === 'admin' ? 'admin' : 'teacher'
+            name, email, password,
+            role: ['admin', 'teacher', 'parent'].includes(role) ? role : 'teacher',
+            studentId: role === 'parent' ? (studentId || null) : null
         });
         await user.save();
 
         res.status(201).json({
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role
+            id: user._id, name: user.name,
+            email: user.email, role: user.role,
+            studentId: user.studentId || null
         });
     } catch (err) {
         res.status(400).json({ error: "Could not create user" });
     }
 };
 
-// GET /api/auth/users (admin only)
+// GET /api/auth/users
 exports.getUsers = async (req, res) => {
     try {
-        const users = await User.find().select('-password');
+        const users = await User.find()
+            .select('-password')
+            .populate('studentId', 'name rollNo');
         res.json(users);
     } catch (err) {
         res.status(500).json({ error: "Could not fetch users" });
     }
 };
 
-// DELETE /api/auth/users/:id (admin only)
+// DELETE /api/auth/users/:id
 exports.deleteUser = async (req, res) => {
     try {
         if (req.user.id === req.params.id) {
-            return res.status(400).json({ error: "You can't delete the account you're currently logged in as" });
+            return res.status(400).json({ error: "You can't delete your own account" });
         }
         const user = await User.findByIdAndDelete(req.params.id);
         if (!user) return res.status(404).json({ error: "User not found" });

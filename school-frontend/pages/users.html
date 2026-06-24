@@ -1,18 +1,16 @@
 <!doctype html>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Users - School Management System</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
-
 <body>
     <div id="navbar-placeholder"></div>
     <div class="container">
         <h1 class="h1">Manage Users</h1>
-        <p class="small">Create login accounts for admins and teachers. Passwords are stored securely and cannot be recovered — set a strong one and share it directly with the user.</p>
+        <p class="small">Create login accounts for admins, teachers, and parents.</p>
         <p class="msg" id="status-msg"></p>
 
         <div class="grid">
@@ -23,11 +21,12 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Linked Student</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody id="users-tbody">
-                        <tr><td colspan="4" class="small">Loading...</td></tr>
+                        <tr><td colspan="5" class="small">Loading...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -47,7 +46,14 @@
                     <div class="form-row">
                         <select class="input" id="role" style="flex:1">
                             <option value="teacher">Teacher</option>
+                            <option value="parent">Parent</option>
                             <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <!-- shown only when role = parent -->
+                    <div class="form-row" id="student-row" style="display:none">
+                        <select class="input" id="studentId" style="flex:1">
+                            <option value="">-- Link to student --</option>
                         </select>
                     </div>
                     <div class="form-row">
@@ -63,5 +69,4 @@
     <script src="/app.js"></script>
     <script src="/js/users.js"></script>
 </body>
-
 </html>

@@ -19,8 +19,14 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['admin', 'teacher'],
+        enum: ['admin', 'teacher', 'parent'],
         default: 'teacher'
+    },
+    // only set for parent accounts — links to their child's Student record
+    studentId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Student',
+        default: null
     }
 }, { timestamps: true });
 
