@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // GET /api/teachers
 exports.getTeachers = async (req, res) => {
     try {
-        const teachers = await Teacher.find({ isActive: true })
+        const teachers = await Teacher.find({ isActive: { $ne: false } })
             .populate('userId', 'name email role');
         res.json(teachers);
     } catch (err) {
