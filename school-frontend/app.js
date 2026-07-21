@@ -90,7 +90,7 @@ fetch("/components/navbar.html")
         document.querySelectorAll(".nav-desktop-links a, .nav-links a").forEach(link => {
             try {
                 const linkPath = new URL(link.href, window.location.origin).pathname;
-                if (linkPath === currentPath || (currentPath === "/" && linkPath === "/index.html")) {
+                if (linkPath === currentPath) {
                     link.classList.add("active");
                 }
             } catch(e) {}
