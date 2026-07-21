@@ -1,7 +1,7 @@
 // parent portal — only accessible by users with role='parent'
 const user = getUser();
 if (!user) { window.location.href = "/pages/login.html"; }
-if (user && user.role !== "parent") { window.location.href = "/index.html"; }
+if (user && user.role !== "parent") { window.location.href = "/pages/dashboard.html"; }
 
 const API_PARENT = `${API_BASE}/parent`;
 

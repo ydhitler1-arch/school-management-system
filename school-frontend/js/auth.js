@@ -33,7 +33,7 @@ function requireAdmin() {
     requireLogin();
     const user = getUser();
     if (user && user.role !== "admin") {
-        window.location.href = "/index.html";
+        window.location.href = "/pages/dashboard.html";
     }
 }
 
