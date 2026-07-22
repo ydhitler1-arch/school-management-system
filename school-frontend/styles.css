@@ -30,7 +30,7 @@
     --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overscroll-behavior-x: none; }
 
 body {
     font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
@@ -39,6 +39,7 @@ body {
     font-size: 14px;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    overscroll-behavior-x: none;
 }
 
 a { color: var(--primary); text-decoration: none; transition: color var(--transition); }
