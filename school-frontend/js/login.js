@@ -1,5 +1,5 @@
 if (getToken()) {
-    window.location.href = "/index.html";
+    window.location.href = "/pages/dashboard.html";
 }
 
 const emailField  = document.getElementById("email");
@@ -35,7 +35,7 @@ async function doLogin() {
 
         localStorage.setItem("sms_token", data.token);
         localStorage.setItem("sms_user", JSON.stringify(data.user));
-        window.location.href = data.user.role === "parent" ? "/pages/parent.html" : "/index.html";
+        window.location.href = data.user.role === "parent" ? "/pages/parent.html" : "/pages/dashboard.html";
 
     } catch (err) {
         statusMsg.textContent = "Could not reach the server. Is the backend running?";
