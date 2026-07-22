@@ -9,37 +9,6 @@
         </div>
     </div>
 
-    <!-- overlay behind drawer -->
-    <div class="nav-overlay" id="nav-overlay"></div>
-
-    <!-- mobile slide-in drawer -->
-    <div class="nav-drawer" id="nav-drawer">
-        <div class="drawer-header">
-            <div>
-                <div id="drawer-user-name" style="font-weight:700;font-size:15px;color:#f1f5f9"></div>
-                <div id="drawer-user-role" style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px"></div>
-            </div>
-            <button class="drawer-close" id="drawer-close">✕</button>
-        </div>
-        <div class="nav-links">
-            <a href="/pages/dashboard.html">🏠 Home</a>
-            <a href="/pages/students.html">🎓 Students</a>
-            <a href="/pages/teachers.html">👩‍🏫 Teachers</a>
-            <a href="/pages/classes.html">🏫 Classes</a>
-            <a href="/pages/attendance.html">📋 Attendance</a>
-            <a href="/pages/grades.html">📝 Grades</a>
-            <a href="/pages/fees.html">💳 Fees</a>
-            <a href="/pages/timetable.html">🗓️ Timetable</a>
-            <a href="/pages/users.html" id="nav-users" style="display:none">👥 Users</a>
-            <a href="/pages/admin.html" id="nav-admin" style="display:none">⚙️ Admin Tools</a>
-        </div>
-        <div class="drawer-footer">
-            <a href="/pages/profile.html" class="drawer-profile-btn">👤 My Profile</a>
-            <button onclick="logout()" class="drawer-logout-btn">Sign out</button>
-            <a href="/pages/privacy.html" class="drawer-privacy-link">Privacy Policy</a>
-        </div>
-    </div>
-
     <!-- desktop nav (hidden on mobile via CSS) -->
     <ul class="nav-desktop-links">
         <li><a href="/pages/dashboard.html">Home</a></li>
@@ -61,3 +30,34 @@
         <button onclick="logout()" class="nav-logout-btn">Sign out</button>
     </div>
 </nav>
+
+<!-- overlay behind drawer -->
+<div class="nav-overlay" id="nav-overlay"></div>
+
+<!-- mobile slide-in drawer -->
+<div class="nav-drawer" id="nav-drawer">
+    <div class="drawer-header">
+        <div>
+            <div id="drawer-user-name" style="font-weight:700;font-size:15px;color:#f1f5f9"></div>
+            <div id="drawer-user-role" style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px"></div>
+        </div>
+        <button class="drawer-close" id="drawer-close">✕</button>
+    </div>
+    <div class="nav-links">
+        <a href="/pages/dashboard.html">🏠 Home</a>
+        <a href="/pages/students.html">🎓 Students</a>
+        <a href="/pages/teachers.html">👩‍🏫 Teachers</a>
+        <a href="/pages/classes.html">🏫 Classes</a>
+        <a href="/pages/attendance.html">📋 Attendance</a>
+        <a href="/pages/grades.html">📝 Grades</a>
+        <a href="/pages/fees.html">💳 Fees</a>
+        <a href="/pages/timetable.html">🗓️ Timetable</a>
+        <a href="/pages/users.html" id="nav-users" style="display:none">👥 Users</a>
+        <a href="/pages/admin.html" id="nav-admin" style="display:none">⚙️ Admin Tools</a>
+    </div>
+    <div class="drawer-footer">
+        <a href="/pages/profile.html" class="drawer-profile-btn">👤 My Profile</a>
+        <button onclick="logout()" class="drawer-logout-btn">Sign out</button>
+        <a href="/pages/privacy.html" class="drawer-privacy-link">Privacy Policy</a>
+    </div>
+</div>
