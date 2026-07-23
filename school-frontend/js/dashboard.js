@@ -146,21 +146,21 @@ async function loadAnnouncements() {
             body.appendChild(div);
         });
 
-        // delete handler
-        body.addEventListener("click", async (e) => {
-            if (!e.target.classList.contains("delete-ann-btn")) return;
-            const id = e.target.dataset.id;
-            if (!confirm("Delete this announcement?")) return;
-            try {
-                await authFetch(`${API_BASE}/announcements/${id}`, { method: "DELETE" });
-                loadAnnouncements();
-            } catch (err) { /* silent */ }
-        });
-
     } catch (err) {
         body.innerHTML = `<p class="small" style="color:var(--gray-400)">Could not load announcements.</p>`;
     }
 }
+
+// delete handler — registered once, delegated so it works for re-rendered announcements
+document.getElementById("announcements-body").addEventListener("click", async (e) => {
+    if (!e.target.classList.contains("delete-ann-btn")) return;
+    const id = e.target.dataset.id;
+    if (!confirm("Delete this announcement?")) return;
+    try {
+        await authFetch(`${API_BASE}/announcements/${id}`, { method: "DELETE" });
+        loadAnnouncements();
+    } catch (err) { /* silent */ }
+});
 
 // ── post announcement modal ────────────────────────────────────────────
 const annModal     = document.getElementById("ann-modal");
